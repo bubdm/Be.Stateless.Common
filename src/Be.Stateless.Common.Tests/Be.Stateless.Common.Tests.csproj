@@ -4,7 +4,7 @@
     <TargetFrameworks>netcoreapp2.2;net472</TargetFrameworks>
     <RootNamespace>Be.Stateless</RootNamespace>
     <AssemblyTitle>Be.Stateless.Common.Tests</AssemblyTitle>
-    <Description>Unit testing of extension methods for general purpose .NET development.</Description>
+    <Description>Unit testing for common class library for general purpose .NET development.</Description>
   </PropertyGroup>
 
   <ItemGroup>
