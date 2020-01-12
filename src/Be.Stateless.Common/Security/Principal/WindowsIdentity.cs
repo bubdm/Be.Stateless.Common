@@ -16,6 +16,7 @@
 
 #endregion
 
+#if !NETCOREAPP && !NETSTANDARD
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -24,7 +25,6 @@ using Be.Stateless.Extensions;
 
 namespace Be.Stateless.Security.Principal
 {
-#if !NETCOREAPP
 	/// <summary>
 	/// </summary>
 	/// <seealso href="http://msdn.microsoft.com/en-us/library/system.security.principal.windowsimpersonationcontext.aspx"/>
@@ -142,5 +142,5 @@ namespace Be.Stateless.Security.Principal
 
 		#endregion
 	}
-#endif
 }
+#endif

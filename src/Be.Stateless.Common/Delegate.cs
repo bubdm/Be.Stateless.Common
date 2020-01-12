@@ -16,13 +16,13 @@
 
 #endregion
 
+#if !NETCOREAPP && !NETSTANDARD
 using System;
 using System.Security.Permissions;
 using Be.Stateless.Security.Principal;
 
 namespace Be.Stateless
 {
-#if !NETCOREAPP
 	public static class Delegate
 	{
 		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -34,5 +34,5 @@ namespace Be.Stateless
 			}
 		}
 	}
-#endif
 }
+#endif

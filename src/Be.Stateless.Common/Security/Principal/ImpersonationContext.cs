@@ -16,6 +16,7 @@
 
 #endregion
 
+#if !NETCOREAPP && !NETSTANDARD
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -25,7 +26,6 @@ using Be.Stateless.Runtime;
 
 namespace Be.Stateless.Security.Principal
 {
-#if !NETCOREAPP
 	internal class ImpersonationContext : IDisposable
 	{
 		public ImpersonationContext(string username, string domain, string password)
@@ -64,5 +64,5 @@ namespace Be.Stateless.Security.Principal
 		private readonly SafeTokenHandle _safeTokenHandle;
 		private readonly WindowsImpersonationContext _windowsImpersonationContext;
 	}
-#endif
 }
+#endif
