@@ -26,12 +26,15 @@ namespace Be.Stateless.Resources
 	{
 		public static Stream Load(Assembly assembly, string name)
 		{
+			if (assembly == null) throw new ArgumentNullException(nameof(assembly));
 			var stream = assembly.GetManifestResourceStream(name) ?? throw new FileNotFoundException($"Cannot find resource in assembly {assembly.FullName}.", name);
 			return stream;
 		}
 
 		public static T Load<T>(Assembly assembly, string name, Func<Stream, T> deserializer)
 		{
+			if (assembly == null) throw new ArgumentNullException(nameof(assembly));
+			if (deserializer == null) throw new ArgumentNullException(nameof(deserializer));
 			using (var stream = assembly.GetManifestResourceStream(name))
 			{
 				if (stream == null) throw new FileNotFoundException($"Cannot find resource in assembly {assembly.FullName}.", name);

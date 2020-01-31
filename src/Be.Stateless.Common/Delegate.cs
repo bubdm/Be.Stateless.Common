@@ -19,11 +19,13 @@
 #if NETFRAMEWORK
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Permissions;
 using Be.Stateless.Security.Principal;
 
 namespace Be.Stateless
 {
+	[SuppressMessage("Naming", "CA1716:Identifiers should not match keywords", Justification = "<Pending>")]
 	public static class Delegate
 	{
 		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -31,7 +33,7 @@ namespace Be.Stateless
 		{
 			using (new WindowsIdentity(username, password).Impersonate())
 			{
-				action();
+				action?.Invoke();
 			}
 		}
 	}

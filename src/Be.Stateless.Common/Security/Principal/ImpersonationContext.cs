@@ -29,9 +29,27 @@ namespace Be.Stateless.Security.Principal
 {
 	internal class ImpersonationContext : IDisposable
 	{
+		#region Nested Type: NativeMethods
+
+		private static class NativeMethods
+		{
+			[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+			[SuppressMessage("ReSharper", "StringLiteralTypo")]
+			internal static extern bool LogonUser(
+				string lpszUsername,
+				string lpszDomain,
+				string lpszPassword,
+				int dwLogonType,
+				int dwLogonProvider,
+				out SafeTokenHandle phToken);
+		}
+
+		#endregion
+
+		[SuppressMessage("Reliability", "CA2000:Dispose objects before losing scope", Justification = "<Pending>")]
 		public ImpersonationContext(string username, string domain, string password)
 		{
-			var result = LogonUser(username, domain, password, (int) LogonType.NewCredentials, (int) LogonProvider.WinNT50, out _safeTokenHandle);
+			var result = NativeMethods.LogonUser(username, domain, password, (int) LogonType.NewCredentials, (int) LogonProvider.WinNT50, out _safeTokenHandle);
 			if (!result) throw new Win32Exception(Marshal.GetLastWin32Error());
 			_windowsImpersonationContext = new System.Security.Principal.WindowsIdentity(_safeTokenHandle.DangerousGetHandle()).Impersonate();
 		}
@@ -51,16 +69,6 @@ namespace Be.Stateless.Security.Principal
 		}
 
 		#endregion
-
-		[DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-		[SuppressMessage("ReSharper", "StringLiteralTypo")]
-		private static extern bool LogonUser(
-			string lpszUsername,
-			string lpszDomain,
-			string lpszPassword,
-			int dwLogonType,
-			int dwLogonProvider,
-			out SafeTokenHandle phToken);
 
 		private readonly SafeTokenHandle _safeTokenHandle;
 		private readonly WindowsImpersonationContext _windowsImpersonationContext;

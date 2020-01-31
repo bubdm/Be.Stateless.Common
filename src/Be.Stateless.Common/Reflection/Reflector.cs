@@ -140,6 +140,7 @@ namespace Be.Stateless.Reflection
 
 		public static object InvokeMethod(Type type, string methodName, params object[] @params)
 		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
 			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 			return InvokeMethod(type, (object) null, methodName, @params, flags);
 		}

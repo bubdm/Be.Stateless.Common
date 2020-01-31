@@ -28,21 +28,28 @@ namespace Be.Stateless.Runtime
 	[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
 	internal sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
 	{
+		#region Nested Type: NativeMethods
+
+		private static class NativeMethods
+		{
+			[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+			[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+			[SuppressUnmanagedCodeSecurity]
+			[return: MarshalAs(UnmanagedType.Bool)]
+			internal static extern bool CloseHandle(IntPtr handle);
+		}
+
+		#endregion
+
 		private SafeTokenHandle() : base(true) { }
 
 		#region Base Class Member Overrides
 
 		protected override bool ReleaseHandle()
 		{
-			return CloseHandle(handle);
+			return NativeMethods.CloseHandle(handle);
 		}
 
 		#endregion
-
-		[DllImport("kernel32.dll", CharSet = CharSet.Auto)]
-		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
-		[SuppressUnmanagedCodeSecurity]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		private static extern bool CloseHandle(IntPtr handle);
 	}
 }

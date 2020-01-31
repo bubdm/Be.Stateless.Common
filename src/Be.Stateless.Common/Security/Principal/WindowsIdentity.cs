@@ -30,8 +30,49 @@ namespace Be.Stateless.Security.Principal
 	/// </summary>
 	/// <seealso href="http://msdn.microsoft.com/en-us/library/system.security.principal.windowsimpersonationcontext.aspx"/>
 	/// <seealso href="http://www.cstruter.com/blog/270"/>
+	[SuppressMessage("Design", "CA1060:Move pinvokes to native methods class", Justification = "<Pending>")]
 	internal class WindowsIdentity
 	{
+		#region Nested Type: NativeMethods
+
+		private static class NativeMethods
+		{
+			#region CredUIReturnCode Enum
+
+			/// <summary>
+			/// http://www.pinvoke.net/default.aspx/Enums.CredUIReturnCodes
+			/// </summary>
+			[SuppressMessage("ReSharper", "InconsistentNaming")]
+			internal enum CredUIReturnCode
+			{
+				NO_ERROR = 0,
+				ERROR_INVALID_PARAMETER = 87,
+				ERROR_INSUFFICIENT_BUFFER = 122,
+				ERROR_BAD_ARGUMENTS = 160,
+				ERROR_INVALID_FLAGS = 1004,
+				ERROR_NOT_FOUND = 1168,
+				ERROR_CANCELLED = 1223,
+				ERROR_NO_SUCH_LOGON_SESSION = 1312,
+				ERROR_INVALID_ACCOUNT_NAME = 1315
+			}
+
+			#endregion
+
+			/// <summary>
+			/// http://www.pinvoke.net/default.aspx/credui/CredUIParseUserName.html
+			/// </summary>
+			[DllImport("credui.dll", EntryPoint = "CredUIParseUserNameW", CharSet = CharSet.Unicode)]
+			[SuppressMessage("ReSharper", "StringLiteralTypo")]
+			internal static extern CredUIReturnCode CredUIParseUserName(
+				string userName,
+				StringBuilder user,
+				int userMaxChars,
+				StringBuilder domain,
+				int domainMaxChars);
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Extracts the domain and user account name from a fully qualified user name.
 		/// </summary>
@@ -51,42 +92,43 @@ namespace Be.Stateless.Security.Principal
 		/// langword="false"/>.
 		/// </returns>
 		/// <seealso href="http://www.pinvoke.net/default.aspx/credui.creduiparseusername"/>
+		[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
 		public static void ParseUserName(string username, out string user, out string domain)
 		{
 			if (username.IsNullOrEmpty()) throw new ArgumentNullException(nameof(username));
 
 			var userBuilder = new StringBuilder();
 			var domainBuilder = new StringBuilder();
-			var code = CredUIParseUserName(username, userBuilder, int.MaxValue, domainBuilder, int.MaxValue);
+			var code = NativeMethods.CredUIParseUserName(username, userBuilder, int.MaxValue, domainBuilder, int.MaxValue);
 			switch (code)
 			{
-				case CredUIReturnCode.NO_ERROR:
+				case NativeMethods.CredUIReturnCode.NO_ERROR:
 					user = userBuilder.ToString();
 					domain = domainBuilder.ToString();
 					break;
 
-				case CredUIReturnCode.ERROR_CANCELLED:
+				case NativeMethods.CredUIReturnCode.ERROR_CANCELLED:
 					throw new Exception("Canceled.");
 
-				case CredUIReturnCode.ERROR_NO_SUCH_LOGON_SESSION:
+				case NativeMethods.CredUIReturnCode.ERROR_NO_SUCH_LOGON_SESSION:
 					throw new Exception("No such logon session.");
 
-				case CredUIReturnCode.ERROR_NOT_FOUND:
+				case NativeMethods.CredUIReturnCode.ERROR_NOT_FOUND:
 					throw new Exception("Not found.");
 
-				case CredUIReturnCode.ERROR_INVALID_ACCOUNT_NAME:
+				case NativeMethods.CredUIReturnCode.ERROR_INVALID_ACCOUNT_NAME:
 					throw new Exception($"Invalid account name ({username}).");
 
-				case CredUIReturnCode.ERROR_INSUFFICIENT_BUFFER:
+				case NativeMethods.CredUIReturnCode.ERROR_INSUFFICIENT_BUFFER:
 					throw new Exception("Insufficient buffer.");
 
-				case CredUIReturnCode.ERROR_BAD_ARGUMENTS:
+				case NativeMethods.CredUIReturnCode.ERROR_BAD_ARGUMENTS:
 					throw new Exception("Bad arguments.");
 
-				case CredUIReturnCode.ERROR_INVALID_PARAMETER:
+				case NativeMethods.CredUIReturnCode.ERROR_INVALID_PARAMETER:
 					throw new Exception("Invalid parameter.");
 
-				case CredUIReturnCode.ERROR_INVALID_FLAGS:
+				case NativeMethods.CredUIReturnCode.ERROR_INVALID_FLAGS:
 					throw new Exception("Invalid flags.");
 
 				default:
@@ -109,39 +151,6 @@ namespace Be.Stateless.Security.Principal
 			ParseUserName(UserName, out var username, out var domain);
 			return new ImpersonationContext(username, domain, Password);
 		}
-
-		#region CredUIParseUserName
-
-		/// <summary>
-		/// http://www.pinvoke.net/default.aspx/Enums.CredUIReturnCodes
-		/// </summary>
-		[SuppressMessage("ReSharper", "InconsistentNaming")]
-		private enum CredUIReturnCode
-		{
-			NO_ERROR = 0,
-			ERROR_INVALID_PARAMETER = 87,
-			ERROR_INSUFFICIENT_BUFFER = 122,
-			ERROR_BAD_ARGUMENTS = 160,
-			ERROR_INVALID_FLAGS = 1004,
-			ERROR_NOT_FOUND = 1168,
-			ERROR_CANCELLED = 1223,
-			ERROR_NO_SUCH_LOGON_SESSION = 1312,
-			ERROR_INVALID_ACCOUNT_NAME = 1315
-		}
-
-		/// <summary>
-		/// http://www.pinvoke.net/default.aspx/credui/CredUIParseUserName.html
-		/// </summary>
-		[DllImport("credui.dll", EntryPoint = "CredUIParseUserNameW", CharSet = CharSet.Unicode)]
-		[SuppressMessage("ReSharper", "StringLiteralTypo")]
-		private static extern CredUIReturnCode CredUIParseUserName(
-			string userName,
-			StringBuilder user,
-			int userMaxChars,
-			StringBuilder domain,
-			int domainMaxChars);
-
-		#endregion
 	}
 }
 
