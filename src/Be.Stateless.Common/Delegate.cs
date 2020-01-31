@@ -16,7 +16,8 @@
 
 #endregion
 
-#if !NETCOREAPP && !NETSTANDARD
+#if NETFRAMEWORK
+
 using System;
 using System.Security.Permissions;
 using Be.Stateless.Security.Principal;
@@ -35,4 +36,5 @@ namespace Be.Stateless
 		}
 	}
 }
+
 #endif

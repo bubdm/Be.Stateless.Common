@@ -16,9 +16,10 @@
 
 #endregion
 
+#if NETFRAMEWORK
+
 namespace Be.Stateless.Security.Principal
 {
-#if !NETCOREAPP
 	internal enum LogonType
 	{
 		Interactive = 2,
@@ -29,5 +30,6 @@ namespace Be.Stateless.Security.Principal
 		NetworkClearText = 8,
 		NewCredentials = 9
 	}
-#endif
 }
+
+#endif

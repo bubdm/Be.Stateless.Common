@@ -16,11 +16,12 @@
 
 #endregion
 
+#if NETFRAMEWORK
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace Be.Stateless.Security.Principal
 {
-#if !NETCOREAPP
 	[SuppressMessage("ReSharper", "InconsistentNaming")]
 	internal enum LogonProvider
 	{
@@ -29,5 +30,6 @@ namespace Be.Stateless.Security.Principal
 		WinNT40 = 2,
 		WinNT50 = 3
 	}
-#endif
 }
+
+#endif

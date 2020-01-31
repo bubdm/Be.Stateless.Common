@@ -16,7 +16,8 @@
 
 #endregion
 
-#if !NETCOREAPP && !NETSTANDARD
+#if NETFRAMEWORK
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -65,4 +66,5 @@ namespace Be.Stateless.Security.Principal
 		private readonly WindowsImpersonationContext _windowsImpersonationContext;
 	}
 }
+
 #endif

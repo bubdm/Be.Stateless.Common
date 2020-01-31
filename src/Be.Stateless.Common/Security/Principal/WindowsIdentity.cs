@@ -16,7 +16,8 @@
 
 #endregion
 
-#if !NETCOREAPP && !NETSTANDARD
+#if NETFRAMEWORK
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
@@ -143,4 +144,5 @@ namespace Be.Stateless.Security.Principal
 		#endregion
 	}
 }
+
 #endif
