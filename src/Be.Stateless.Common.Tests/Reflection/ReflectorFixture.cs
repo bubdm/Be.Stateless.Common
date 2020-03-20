@@ -24,36 +24,6 @@ namespace Be.Stateless.Reflection
 {
 	public class ReflectorFixture
 	{
-		#region Nested Type: IStub
-
-		private interface IStub
-		{
-			string TargetEnvironment { get; }
-		}
-
-		#endregion
-
-		#region Nested Type: Stub
-
-		private class Stub : IStub
-		{
-			private Stub() { }
-
-			#region IStub Members
-
-			[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-			public string TargetEnvironment { get; private set; }
-
-			#endregion
-
-			[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-			public string Property { get; private set; }
-
-			internal static readonly IStub Instance = new Stub();
-		}
-
-		#endregion
-
 		[Fact]
 		public void SetInterfaceReadOnlyProperty()
 		{
@@ -74,6 +44,28 @@ namespace Be.Stateless.Reflection
 		{
 			Reflector.SetProperty(Stub.Instance, "Property", "DEV");
 			((Stub) Stub.Instance).Property.Should().Be("DEV");
+		}
+
+		private interface IStub
+		{
+			string TargetEnvironment { get; }
+		}
+
+		private class Stub : IStub
+		{
+			private Stub() { }
+
+			#region IStub Members
+
+			[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+			public string TargetEnvironment { get; private set; }
+
+			#endregion
+
+			[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+			public string Property { get; private set; }
+
+			internal static readonly IStub Instance = new Stub();
 		}
 	}
 }
