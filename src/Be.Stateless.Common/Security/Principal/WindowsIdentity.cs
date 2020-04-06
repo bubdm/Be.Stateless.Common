@@ -92,7 +92,6 @@ namespace Be.Stateless.Security.Principal
 		/// langword="false"/>.
 		/// </returns>
 		/// <seealso href="http://www.pinvoke.net/default.aspx/credui.creduiparseusername"/>
-		[SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
 		public static void ParseUserName(string username, out string user, out string domain)
 		{
 			if (username.IsNullOrEmpty()) throw new ArgumentNullException(nameof(username));
