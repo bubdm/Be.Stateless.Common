@@ -30,7 +30,6 @@ namespace Be.Stateless.Security.Principal
 	/// </summary>
 	/// <seealso href="http://msdn.microsoft.com/en-us/library/system.security.principal.windowsimpersonationcontext.aspx"/>
 	/// <seealso href="http://www.cstruter.com/blog/270"/>
-	[SuppressMessage("Design", "CA1060:Move pinvokes to native methods class", Justification = "<Pending>")]
 	internal class WindowsIdentity
 	{
 		#region Nested Type: NativeMethods
