@@ -25,7 +25,7 @@ using Microsoft.Win32.SafeHandles;
 
 namespace Be.Stateless.Runtime
 {
-	[SuppressMessage("ReSharper", "ClassNeverInstantiated.Global")]
+	[SuppressMessage("ReSharper", "UnusedType.Global", Justification = "Public API.")]
 	internal sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
 	{
 		#region Nested Type: NativeMethods

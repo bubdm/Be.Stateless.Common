@@ -18,6 +18,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -28,6 +29,7 @@ namespace Be.Stateless.Text
 	/// <summary>
 	/// Converts an <see cref="Encoding"/> back-and-forth to a <see cref="string"/>.
 	/// </summary>
+	[SuppressMessage("ReSharper", "UnusedType.Global", Justification = "Public API.")]
 	public class EncodingConverter : ExpandableObjectConverter
 	{
 		/// <summary>
@@ -58,12 +60,13 @@ namespace Be.Stateless.Text
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="Serialize"/>
+		[SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Public API.")]
 		public static Encoding Deserialize(string encoding)
 		{
-			if (encoding.IsNullOrEmpty()) throw new NotSupportedException($"Cannot parse a null or empty string into a {typeof(Encoding).Name}.");
+			if (encoding.IsNullOrEmpty()) throw new NotSupportedException($"Cannot parse a null or empty string into a {nameof(Encoding)}.");
 
 			var match = _regex.Match(encoding);
-			if (!match.Success) throw new NotSupportedException($"'{encoding}' format is invalid and cannot be parsed into a {typeof(Encoding).Name}.");
+			if (!match.Success) throw new NotSupportedException($"'{encoding}' format is invalid and cannot be parsed into a {nameof(Encoding)}.");
 
 			var name = match.Groups["Name"].Value;
 			var emitPreamble = match.Groups["Preamble"].Success;
@@ -97,6 +100,7 @@ namespace Be.Stateless.Text
 		/// </para>
 		/// </remarks>
 		/// <seealso cref="Deserialize"/>
+		[SuppressMessage("ReSharper", "MemberCanBePrivate.Global", Justification = "Public API.")]
 		public static string Serialize(Encoding encoding)
 		{
 			if (encoding == null) throw new ArgumentNullException(nameof(encoding));
@@ -194,6 +198,7 @@ namespace Be.Stateless.Text
 
 		#endregion
 
+		// ReSharper disable once MemberCanBePrivate.Global
 		internal const string ENCODING_SIGNATURE_MODIFIER = "with signature";
 
 		private static readonly Regex _regex = new Regex(

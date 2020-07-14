@@ -17,11 +17,14 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Reflection;
 
 namespace Be.Stateless.Resources
 {
+	[SuppressMessage("ReSharper", "UnusedType.Global", Justification = "Public API.")]
+	[SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Public API.")]
 	public static class ResourceManager
 	{
 		public static Stream Load(Assembly assembly, string name)

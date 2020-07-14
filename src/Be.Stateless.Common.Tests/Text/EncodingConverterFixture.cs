@@ -54,7 +54,7 @@ namespace Be.Stateless.Text
 			const string value = "utf-8, bam";
 			var sut = new EncodingConverter();
 			Action act = () => sut.ConvertFrom(value);
-			act.Should().Throw<NotSupportedException>().WithMessage($"'{value}' format is invalid and cannot be parsed into a {typeof(Encoding).Name}.");
+			act.Should().Throw<NotSupportedException>().WithMessage($"'{value}' format is invalid and cannot be parsed into a {nameof(Encoding)}.");
 		}
 
 		[Fact]
@@ -62,7 +62,7 @@ namespace Be.Stateless.Text
 		{
 			var sut = new EncodingConverter();
 			Action act = () => sut.ConvertFrom("");
-			act.Should().Throw<NotSupportedException>().WithMessage($"Cannot parse a null or empty string into a {typeof(Encoding).Name}.");
+			act.Should().Throw<NotSupportedException>().WithMessage($"Cannot parse a null or empty string into a {nameof(Encoding)}.");
 		}
 
 		[Fact]

@@ -17,10 +17,13 @@
 #endregion
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Be.Stateless.Reflection
 {
+	[SuppressMessage("ReSharper", "UnusedType.Global", Justification = "Public API.")]
+	[SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Public API.")]
 	public static class Reflector
 	{
 		#region Get Field
