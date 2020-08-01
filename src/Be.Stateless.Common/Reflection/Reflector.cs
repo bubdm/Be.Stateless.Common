@@ -26,26 +26,26 @@ namespace Be.Stateless.Reflection
 	[SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Public API.")]
 	public static class Reflector
 	{
+		private const BindingFlags INSTANCE_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+		private const BindingFlags STATIC_BINDING_FLAGS = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+
 		#region Get Field
 
 		public static object GetField<T>(string fieldName)
 		{
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			return GetField(typeof(T), null, fieldName, flags);
-		}
-
-		public static object GetField<T>(T instance, string fieldName)
-		{
-			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
-			const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			return GetField(typeof(T), instance, fieldName, flags);
+			return GetField(typeof(T), null, fieldName, STATIC_BINDING_FLAGS);
 		}
 
 		public static object GetField(Type type, string fieldName)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			return GetField(type, null, fieldName, flags);
+			return GetField(type, null, fieldName, STATIC_BINDING_FLAGS);
+		}
+
+		public static object GetField<T>(T instance, string fieldName)
+		{
+			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
+			return GetField(typeof(T), instance, fieldName, INSTANCE_BINDING_FLAGS);
 		}
 
 		private static object GetField(Type type, object instance, string fieldName, BindingFlags flags)
@@ -62,15 +62,19 @@ namespace Be.Stateless.Reflection
 
 		public static void SetField<T>(string fieldName, object value)
 		{
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			SetField(typeof(T), null, fieldName, value, flags);
+			SetField(typeof(T), null, fieldName, value, STATIC_BINDING_FLAGS);
+		}
+
+		public static void SetField(Type type, string fieldName, object value)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			SetField(type, null, fieldName, value, STATIC_BINDING_FLAGS);
 		}
 
 		public static void SetField<T>(T instance, string fieldName, object value)
 		{
 			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
-			const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			SetField(typeof(T), instance, fieldName, value, flags);
+			SetField(typeof(T), instance, fieldName, value, INSTANCE_BINDING_FLAGS);
 		}
 
 		private static void SetField(Type type, object instance, string fieldName, object value, BindingFlags flags)
@@ -87,15 +91,19 @@ namespace Be.Stateless.Reflection
 
 		public static object GetProperty<T>(string propertyName)
 		{
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			return GetProperty(typeof(T), null, propertyName, flags);
+			return GetProperty(typeof(T), null, propertyName, STATIC_BINDING_FLAGS);
+		}
+
+		public static object GetProperty(Type type, string propertyName)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			return GetProperty(type, null, propertyName, STATIC_BINDING_FLAGS);
 		}
 
 		public static object GetProperty<T>(T instance, string propertyName)
 		{
 			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
-			const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			return GetProperty(typeof(T), instance, propertyName, flags);
+			return GetProperty(typeof(T), instance, propertyName, INSTANCE_BINDING_FLAGS);
 		}
 
 		private static object GetProperty(Type type, object instance, string propertyName, BindingFlags flags)
@@ -112,15 +120,19 @@ namespace Be.Stateless.Reflection
 
 		public static void SetProperty<T>(string propertyName, object value)
 		{
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			SetProperty(typeof(T), null, propertyName, value, flags);
+			SetProperty(typeof(T), null, propertyName, value, STATIC_BINDING_FLAGS);
+		}
+
+		public static void SetProperty(Type type, string propertyName, object value)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			SetProperty(type, null, propertyName, value, STATIC_BINDING_FLAGS);
 		}
 
 		public static void SetProperty<T>(T instance, string propertyName, object value)
 		{
 			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
-			const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			SetProperty(typeof(T).IsInterface ? instance.GetType() : typeof(T), instance, propertyName, value, flags);
+			SetProperty(typeof(T).IsInterface ? instance.GetType() : typeof(T), instance, propertyName, value, INSTANCE_BINDING_FLAGS);
 		}
 
 		private static void SetProperty(Type type, object instance, string propertyName, object value, BindingFlags flags)
@@ -137,22 +149,19 @@ namespace Be.Stateless.Reflection
 
 		public static object InvokeMethod<T>(string methodName, params object[] @params)
 		{
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			return InvokeMethod(typeof(T), (object) null, methodName, @params, flags);
+			return InvokeMethod(typeof(T), (object) null, methodName, @params, STATIC_BINDING_FLAGS);
 		}
 
 		public static object InvokeMethod(Type type, string methodName, params object[] @params)
 		{
 			if (type == null) throw new ArgumentNullException(nameof(type));
-			const BindingFlags flags = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-			return InvokeMethod(type, (object) null, methodName, @params, flags);
+			return InvokeMethod(type, (object) null, methodName, @params, STATIC_BINDING_FLAGS);
 		}
 
 		public static object InvokeMethod<T>(T instance, string methodName, params object[] @params)
 		{
 			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
-			const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-			return InvokeMethod(typeof(T), instance, methodName, @params, flags);
+			return InvokeMethod(typeof(T), instance, methodName, @params, INSTANCE_BINDING_FLAGS);
 		}
 
 		private static object InvokeMethod(IReflect type, object instance, string methodName, object[] @params, BindingFlags flags)
