@@ -26,9 +26,6 @@ namespace Be.Stateless.Reflection
 	[SuppressMessage("ReSharper", "UnusedMember.Global", Justification = "Public API.")]
 	public static class Reflector
 	{
-		private const BindingFlags INSTANCE_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-		private const BindingFlags STATIC_BINDING_FLAGS = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-
 		#region Get Field
 
 		public static object GetField<T>(string fieldName)
@@ -48,7 +45,7 @@ namespace Be.Stateless.Reflection
 			return GetField(typeof(T), instance, fieldName, INSTANCE_BINDING_FLAGS);
 		}
 
-		private static object GetField(Type type, object instance, string fieldName, BindingFlags flags)
+		private static object GetField(IReflect type, object instance, string fieldName, BindingFlags flags)
 		{
 			var field = type.GetField(fieldName, flags);
 			if (field == null && instance != null) field = instance.GetType().GetField(fieldName, flags);
@@ -77,7 +74,7 @@ namespace Be.Stateless.Reflection
 			SetField(typeof(T), instance, fieldName, value, INSTANCE_BINDING_FLAGS);
 		}
 
-		private static void SetField(Type type, object instance, string fieldName, object value, BindingFlags flags)
+		private static void SetField(IReflect type, object instance, string fieldName, object value, BindingFlags flags)
 		{
 			var field = type.GetField(fieldName, flags);
 			if (field == null && instance != null) field = instance.GetType().GetField(fieldName, flags);
@@ -106,7 +103,7 @@ namespace Be.Stateless.Reflection
 			return GetProperty(typeof(T), instance, propertyName, INSTANCE_BINDING_FLAGS);
 		}
 
-		private static object GetProperty(Type type, object instance, string propertyName, BindingFlags flags)
+		private static object GetProperty(IReflect type, object instance, string propertyName, BindingFlags flags)
 		{
 			var property = type.GetProperty(propertyName, flags);
 			if (property == null && instance != null) property = instance.GetType().GetProperty(propertyName, flags);
@@ -135,7 +132,7 @@ namespace Be.Stateless.Reflection
 			SetProperty(typeof(T).IsInterface ? instance.GetType() : typeof(T), instance, propertyName, value, INSTANCE_BINDING_FLAGS);
 		}
 
-		private static void SetProperty(Type type, object instance, string propertyName, object value, BindingFlags flags)
+		private static void SetProperty(IReflect type, object instance, string propertyName, object value, BindingFlags flags)
 		{
 			var property = type.GetProperty(propertyName, flags);
 			if (property == null && instance != null) property = instance.GetType().GetProperty(propertyName, flags);
@@ -178,6 +175,13 @@ namespace Be.Stateless.Reflection
 				return type.InvokeMember(methodName, flags | BindingFlags.InvokeMethod, null, instance, @params, null, null, null);
 			}
 		}
+
+		#endregion
+
+		#region Binding Flags
+
+		private const BindingFlags INSTANCE_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+		private const BindingFlags STATIC_BINDING_FLAGS = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
 
 		#endregion
 	}

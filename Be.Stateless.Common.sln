@@ -9,8 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Be.Stateless.Common.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB2DB540-81B8-4FA6-A37F-2DD74DE501FC}"
 	ProjectSection(SolutionItems) = preProject
-		.editorconfig = .editorconfig
+		.settings\.editorconfig = .settings\.editorconfig
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Be.Stateless.Common.Unit", "src\Be.Stateless.Common.Unit\Be.Stateless.Common.Unit.csproj", "{A55AC9FE-2F63-4002-A1E0-CC894DCCE28B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Be.Stateless.Common.Unit.Tests", "src\Be.Stateless.Common.Unit.Tests\Be.Stateless.Common.Unit.Tests.csproj", "{ACF20451-6723-4F9A-AF9E-36598C83FBB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +30,14 @@ Global
 		{6A503582-C542-4A6C-9E58-4AFD6BEEE9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A503582-C542-4A6C-9E58-4AFD6BEEE9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A503582-C542-4A6C-9E58-4AFD6BEEE9B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A55AC9FE-2F63-4002-A1E0-CC894DCCE28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A55AC9FE-2F63-4002-A1E0-CC894DCCE28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A55AC9FE-2F63-4002-A1E0-CC894DCCE28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A55AC9FE-2F63-4002-A1E0-CC894DCCE28B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACF20451-6723-4F9A-AF9E-36598C83FBB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF20451-6723-4F9A-AF9E-36598C83FBB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF20451-6723-4F9A-AF9E-36598C83FBB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF20451-6723-4F9A-AF9E-36598C83FBB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

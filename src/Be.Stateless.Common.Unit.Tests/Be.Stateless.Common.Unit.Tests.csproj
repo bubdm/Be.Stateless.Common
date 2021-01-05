@@ -3,9 +3,16 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>
     <RootNamespace>Be.Stateless</RootNamespace>
-    <AssemblyTitle>Be.Stateless.Common.Tests</AssemblyTitle>
-    <Description>Unit tests for common class library for general purpose .NET development.</Description>
+    <AssemblyTitle>Be.Stateless.Common.Unit.Tests</AssemblyTitle>
+    <Description>Unit tests for common unit test library for general purpose .NET development.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resource.txt" />
+    <EmbeddedResource Include="Unit\Resources\Data\Resource.Composite.Name.txt" />
+    <EmbeddedResource Include="Unit\Resources\Data\Resource.txt" />
+    <EmbeddedResource Include="Unit\Resources\Resource.txt" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\.settings\.editorconfig" Link=".editorconfig" />
@@ -27,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Be.Stateless.Common\Be.Stateless.Common.csproj" />
+    <ProjectReference Include="..\Be.Stateless.Common.Unit\Be.Stateless.Common.Unit.csproj" />
   </ItemGroup>
 
 </Project>
