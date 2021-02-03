@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -180,8 +180,9 @@ namespace Be.Stateless.Reflection
 
 		#region Binding Flags
 
-		private const BindingFlags INSTANCE_BINDING_FLAGS = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-		private const BindingFlags STATIC_BINDING_FLAGS = BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+		private const BindingFlags COMMON_BINDING_FLAGS = BindingFlags.FlattenHierarchy | BindingFlags.NonPublic | BindingFlags.Public;
+		private const BindingFlags INSTANCE_BINDING_FLAGS = BindingFlags.Instance | COMMON_BINDING_FLAGS;
+		private const BindingFlags STATIC_BINDING_FLAGS = BindingFlags.Static | COMMON_BINDING_FLAGS;
 
 		#endregion
 	}

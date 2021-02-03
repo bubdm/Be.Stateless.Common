@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net48</TargetFrameworks>
     <RootNamespace>Be.Stateless</RootNamespace>
-    <AssemblyTitle>Be.Stateless.Common.Tests</AssemblyTitle>
+    <AssemblyName>Be.Stateless.Common.Tests</AssemblyName>
     <Description>Unit tests for common class library for general purpose .NET development.</Description>
   </PropertyGroup>
 

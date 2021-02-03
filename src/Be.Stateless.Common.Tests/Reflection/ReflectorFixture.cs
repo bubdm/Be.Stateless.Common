@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 #endregion
 
-using System.Diagnostics.CodeAnalysis;
+using Be.Stateless.Dummies.Reflection;
 using FluentAssertions;
 using Xunit;
 
@@ -25,145 +25,108 @@ namespace Be.Stateless.Reflection
 	public class ReflectorFixture
 	{
 		[Fact]
+		public void GetGenericStaticPropertyThruDerivedType()
+		{
+			Reflector.GetProperty(typeof(ReflectedDerivedGenericDummy), "Instance").Should().NotBeNull();
+		}
+
+		[Fact]
 		public void GetInstanceField()
 		{
-			Reflector.GetField(Stub.Instance, "_field").Should().Be(Stub.Instance.FieldSpy);
+			Reflector.GetField(ReflectedDummy.Instance, "_field").Should().Be(ReflectedDummy.Instance.FieldSpy);
 		}
 
 		[Fact]
 		public void GetInstanceProperty()
 		{
-			Reflector.GetProperty(Stub.Instance, "Property").Should().Be(Stub.Instance.PropertySpy);
+			Reflector.GetProperty(ReflectedDummy.Instance, "Property").Should().Be(ReflectedDummy.Instance.PropertySpy);
 		}
 
 		[Fact]
 		public void GetStaticFieldThroughGeneric()
 		{
-			Reflector.GetField<Stub>("_staticField").Should().Be(Stub.StaticFieldSpy);
+			Reflector.GetField<ReflectedDummy>("_staticField").Should().Be(ReflectedDummy.StaticFieldSpy);
 		}
 
 		[Fact]
 		public void GetStaticFieldThroughType()
 		{
-			Reflector.GetField(typeof(Stub), "_staticField").Should().Be(Stub.StaticFieldSpy);
+			Reflector.GetField(typeof(ReflectedDummy), "_staticField").Should().Be(ReflectedDummy.StaticFieldSpy);
 		}
 
 		[Fact]
 		public void GetStaticPropertyThroughGeneric()
 		{
-			Reflector.GetProperty<Stub>("StaticProperty").Should().Be(Stub.StaticPropertySpy);
+			Reflector.GetProperty<ReflectedDummy>("StaticProperty").Should().Be(ReflectedDummy.StaticPropertySpy);
 		}
 
 		[Fact]
 		public void GetStaticPropertyThroughType()
 		{
-			Reflector.GetProperty(typeof(Stub), "StaticProperty").Should().Be(Stub.StaticPropertySpy);
+			Reflector.GetProperty(typeof(ReflectedDummy), "StaticProperty").Should().Be(ReflectedDummy.StaticPropertySpy);
 		}
 
 		[Fact]
 		public void InvokeInstanceMethod()
 		{
-			Reflector.InvokeMethod(Stub.Instance, "Method", nameof(InvokeInstanceMethod));
-			Stub.Instance.FieldSpy.Should().Be(nameof(InvokeInstanceMethod));
+			Reflector.InvokeMethod(ReflectedDummy.Instance, "Method", nameof(InvokeInstanceMethod));
+			ReflectedDummy.Instance.FieldSpy.Should().Be(nameof(InvokeInstanceMethod));
 		}
 
 		[Fact]
 		public void InvokeStaticMethodThroughGeneric()
 		{
-			Reflector.InvokeMethod<Stub>("StaticMethod", nameof(InvokeStaticMethodThroughGeneric));
-			Stub.StaticFieldSpy.Should().Be(nameof(InvokeStaticMethodThroughGeneric));
+			Reflector.InvokeMethod<ReflectedDummy>("StaticMethod", nameof(InvokeStaticMethodThroughGeneric));
+			ReflectedDummy.StaticFieldSpy.Should().Be(nameof(InvokeStaticMethodThroughGeneric));
 		}
 
 		[Fact]
 		public void InvokeStaticMethodThroughType()
 		{
-			Reflector.InvokeMethod(typeof(Stub), "StaticMethod", nameof(InvokeStaticMethodThroughType));
-			Stub.StaticFieldSpy.Should().Be(nameof(InvokeStaticMethodThroughType));
+			Reflector.InvokeMethod(typeof(ReflectedDummy), "StaticMethod", nameof(InvokeStaticMethodThroughType));
+			ReflectedDummy.StaticFieldSpy.Should().Be(nameof(InvokeStaticMethodThroughType));
 		}
 
 		[Fact]
 		public void SetInstanceField()
 		{
-			Reflector.SetField(Stub.Instance, "_field", nameof(SetInstanceField));
-			Stub.Instance.FieldSpy.Should().Be(nameof(SetInstanceField));
+			Reflector.SetField(ReflectedDummy.Instance, "_field", nameof(SetInstanceField));
+			ReflectedDummy.Instance.FieldSpy.Should().Be(nameof(SetInstanceField));
 		}
 
 		[Fact]
 		public void SetInstanceProperty()
 		{
-			Reflector.SetProperty(Stub.Instance, "Property", nameof(SetInstanceProperty));
-			Stub.Instance.PropertySpy.Should().Be(nameof(SetInstanceProperty));
+			Reflector.SetProperty(ReflectedDummy.Instance, "Property", nameof(SetInstanceProperty));
+			ReflectedDummy.Instance.PropertySpy.Should().Be(nameof(SetInstanceProperty));
 		}
 
 		[Fact]
 		public void SetStaticFieldThroughGeneric()
 		{
-			Reflector.SetField<Stub>("_staticField", nameof(SetStaticFieldThroughGeneric));
-			Stub.StaticFieldSpy.Should().Be(nameof(SetStaticFieldThroughGeneric));
+			Reflector.SetField<ReflectedDummy>("_staticField", nameof(SetStaticFieldThroughGeneric));
+			ReflectedDummy.StaticFieldSpy.Should().Be(nameof(SetStaticFieldThroughGeneric));
 		}
 
 		[Fact]
 		public void SetStaticFieldThroughType()
 		{
-			Reflector.SetField(typeof(Stub), "_staticField", nameof(SetStaticFieldThroughType));
-			Stub.StaticFieldSpy.Should().Be(nameof(SetStaticFieldThroughType));
+			Reflector.SetField(typeof(ReflectedDummy), "_staticField", nameof(SetStaticFieldThroughType));
+			ReflectedDummy.StaticFieldSpy.Should().Be(nameof(SetStaticFieldThroughType));
 		}
 
 		[Fact]
 		public void SetStaticPropertyThroughGeneric()
 		{
-			Reflector.SetProperty<Stub>("StaticProperty", nameof(SetStaticPropertyThroughGeneric));
-			Stub.StaticPropertySpy.Should().Be(nameof(SetStaticPropertyThroughGeneric));
+			Reflector.SetProperty<ReflectedDummy>("StaticProperty", nameof(SetStaticPropertyThroughGeneric));
+			ReflectedDummy.StaticPropertySpy.Should().Be(nameof(SetStaticPropertyThroughGeneric));
 		}
 
 		[Fact]
 		public void SetStaticPropertyThroughType()
 		{
-			Reflector.SetProperty(typeof(Stub), "StaticProperty", nameof(SetStaticPropertyThroughType));
-			Stub.StaticPropertySpy.Should().Be(nameof(SetStaticPropertyThroughType));
-		}
-
-		[SuppressMessage("ReSharper", "UnassignedGetOnlyAutoProperty")]
-		[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
-		[SuppressMessage("ReSharper", "UnusedMember.Local")]
-		private class Stub
-		{
-			public static string StaticFieldSpy => _staticField;
-
-			private static string StaticProperty { get; set; }
-
-			public static string StaticPropertySpy => StaticProperty;
-
-			private static void StaticMethod(string value)
-			{
-				_staticField = value;
-			}
-
-			private Stub() { }
-
-			public string FieldSpy => _field;
-
-			public string PropertySpy => Property;
-
-			private string Property { get; set; }
-
-			private void Method(string value)
-			{
-				_field = value;
-			}
-
-			private void Method(int value)
-			{
-				_field = value.ToString();
-			}
-
-			public static readonly Stub Instance = new Stub();
-
-			[SuppressMessage("Style", "IDE0044:Add readonly modifier")]
-			private static string _staticField = nameof(_staticField);
-
-			[SuppressMessage("Style", "IDE0044:Add readonly modifier")]
-			private string _field = nameof(_field);
+			Reflector.SetProperty(typeof(ReflectedDummy), "StaticProperty", nameof(SetStaticPropertyThroughType));
+			ReflectedDummy.StaticPropertySpy.Should().Be(nameof(SetStaticPropertyThroughType));
 		}
 	}
 }
