@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Be.Stateless.Common.Unit\Be.Stateless.Common.Unit.csproj" />
     <ProjectReference Include="..\Be.Stateless.Common\Be.Stateless.Common.csproj" />
   </ItemGroup>
 

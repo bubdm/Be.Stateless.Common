@@ -45,12 +45,40 @@ namespace Be.Stateless.Reflection
 			return GetField(typeof(T), instance, fieldName, INSTANCE_BINDING_FLAGS);
 		}
 
+		public static bool TryGetField<T>(string fieldName, out object value)
+		{
+			return TryGetField(typeof(T), null, fieldName, STATIC_BINDING_FLAGS, out value);
+		}
+
+		public static bool TryGetField(Type type, string fieldName, out object value)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			return TryGetField(type, null, fieldName, STATIC_BINDING_FLAGS, out value);
+		}
+
+		public static bool TryGetField<T>(T instance, string fieldName, out object value)
+		{
+			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
+			return TryGetField(typeof(T), instance, fieldName, INSTANCE_BINDING_FLAGS, out value);
+		}
+
 		private static object GetField(IReflect type, object instance, string fieldName, BindingFlags flags)
+		{
+			if (TryGetField(type, instance, fieldName, flags, out var value)) return value;
+			throw new ArgumentException($"Target type '{type}' does not contain a definition for field '{fieldName}'.");
+		}
+
+		private static bool TryGetField(IReflect type, object instance, string fieldName, BindingFlags flags, out object value)
 		{
 			var field = type.GetField(fieldName, flags);
 			if (field == null && instance != null) field = instance.GetType().GetField(fieldName, flags);
-			if (field == null) throw new ArgumentException($"There is no field '{fieldName}' for type '{type}'.");
-			return field.GetValue(instance ?? type);
+			if (field == null)
+			{
+				value = default;
+				return false;
+			}
+			value = field.GetValue(instance ?? type);
+			return true;
 		}
 
 		#endregion
@@ -78,7 +106,7 @@ namespace Be.Stateless.Reflection
 		{
 			var field = type.GetField(fieldName, flags);
 			if (field == null && instance != null) field = instance.GetType().GetField(fieldName, flags);
-			if (field == null) throw new ArgumentException($"There is no field '{fieldName}' for type '{type}'.");
+			if (field == null) throw new ArgumentException($"Target type '{type}' does not contain a definition for field '{fieldName}'.");
 			field.SetValue(instance ?? type, value);
 		}
 
@@ -103,12 +131,40 @@ namespace Be.Stateless.Reflection
 			return GetProperty(typeof(T), instance, propertyName, INSTANCE_BINDING_FLAGS);
 		}
 
+		public static bool TryGetProperty<T>(string propertyName, out object value)
+		{
+			return TryGetProperty(typeof(T), null, propertyName, STATIC_BINDING_FLAGS, out value);
+		}
+
+		public static bool TryGetProperty(Type type, string propertyName, out object value)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			return TryGetProperty(type, null, propertyName, STATIC_BINDING_FLAGS, out value);
+		}
+
+		public static bool TryGetProperty<T>(T instance, string propertyName, out object value)
+		{
+			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
+			return TryGetProperty(typeof(T), instance, propertyName, INSTANCE_BINDING_FLAGS, out value);
+		}
+
 		private static object GetProperty(IReflect type, object instance, string propertyName, BindingFlags flags)
+		{
+			if (TryGetProperty(type, instance, propertyName, flags, out var value)) return value;
+			throw new ArgumentException($"Target type '{type}' does not contain a definition for property '{propertyName}'.");
+		}
+
+		private static bool TryGetProperty(IReflect type, object instance, string propertyName, BindingFlags flags, out object value)
 		{
 			var property = type.GetProperty(propertyName, flags);
 			if (property == null && instance != null) property = instance.GetType().GetProperty(propertyName, flags);
-			if (property == null) throw new ArgumentException($"There is no property '{propertyName}' for type '{type}'.");
-			return property.GetValue(instance ?? type, null);
+			if (property == null)
+			{
+				value = default;
+				return false;
+			}
+			value = property.GetValue(instance ?? type, null);
+			return true;
 		}
 
 		#endregion
@@ -136,7 +192,7 @@ namespace Be.Stateless.Reflection
 		{
 			var property = type.GetProperty(propertyName, flags);
 			if (property == null && instance != null) property = instance.GetType().GetProperty(propertyName, flags);
-			if (property == null) throw new ArgumentException($"There is no property '{propertyName}' for type '{type}'.");
+			if (property == null) throw new ArgumentException($"Target type '{type}' does not contain a definition for property '{propertyName}'.");
 			property.SetValue(instance ?? type, value, null);
 		}
 
@@ -161,18 +217,47 @@ namespace Be.Stateless.Reflection
 			return InvokeMethod(typeof(T), instance, methodName, @params, INSTANCE_BINDING_FLAGS);
 		}
 
+		public static bool TryInvokeMethod<T>(string methodName, object[] @params, out object result)
+		{
+			return TryInvokeMethod(typeof(T), null, methodName, @params, STATIC_BINDING_FLAGS, out result);
+		}
+
+		public static bool TryInvokeMethod(Type type, string methodName, object[] @params, out object result)
+		{
+			if (type == null) throw new ArgumentNullException(nameof(type));
+			return TryInvokeMethod(type, null, methodName, @params, STATIC_BINDING_FLAGS, out result);
+		}
+
+		public static bool TryInvokeMethod<T>(T instance, string methodName, object[] @params, out object result)
+		{
+			if (Equals(instance, default(T))) throw new ArgumentNullException(nameof(instance));
+			return TryInvokeMethod(typeof(T), instance, methodName, @params, INSTANCE_BINDING_FLAGS, out result);
+		}
+
 		private static object InvokeMethod(IReflect type, object instance, string methodName, object[] @params, BindingFlags flags)
+		{
+			if (TryInvokeMethod(type, instance, methodName, @params, flags, out var result)) return result;
+			throw new ArgumentException($"Target type '{type}' does not contain a definition for method '{methodName}'.");
+		}
+
+		private static bool TryInvokeMethod(IReflect type, object instance, string methodName, object[] @params, BindingFlags flags, out object result)
 		{
 			try
 			{
 				var method = type.GetMethod(methodName, flags);
 				if (method == null && instance != null) method = instance.GetType().GetMethod(methodName, flags);
-				if (method == null) throw new ArgumentException($"Type '{type}' does not have a method named '{methodName}'.");
-				return method.Invoke(instance, @params);
+				if (method == null)
+				{
+					result = default;
+					return false;
+				}
+				result = method.Invoke(instance, @params);
+				return true;
 			}
 			catch (AmbiguousMatchException)
 			{
-				return type.InvokeMember(methodName, flags | BindingFlags.InvokeMethod, null, instance, @params, null, null, null);
+				result = type.InvokeMember(methodName, flags | BindingFlags.InvokeMethod, null, instance, @params, null, null, null);
+				return true;
 			}
 		}
 
